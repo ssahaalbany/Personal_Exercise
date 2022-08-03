@@ -1,3 +1,4 @@
+import java.util.Iterator;
 import java.util.ArrayList;
 class ArraylistDemo1
 {
@@ -28,7 +29,11 @@ class ArraylistDemo1
 		}
 
 
-		Iterator <Integer> iterator = 
+		Iterator  it =  list.iterator();
+		while (it.hasNext())
+		{
+			System.out.println(it.next());
+		}
 
 	}
 }

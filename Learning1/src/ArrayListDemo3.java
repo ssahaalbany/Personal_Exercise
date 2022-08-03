@@ -1,3 +1,4 @@
+import java.util.Iterator;
 import java.util.ArrayList;
 public class ArrayListDemo3
 {
@@ -20,13 +21,21 @@ public class ArrayListDemo3
 		//employees.add(e6);
 
 
+		Iterator<Employee> it = employees.iterator();
+
+		while(it.hasNext())
+		{
+			System.out.println(it.next());
+		}
+
+/*
 		System.out.println("Number of Employee " + employees.size());
 		System.out.println(employees);
-/*
+
 		for (Employee e : employees)
 		{
 			System.out.println(e);
-		}*/
+		}
 		System.out.println("============================");
 		for (int i=0;i<employees.size();i++)
 		{
@@ -58,6 +67,7 @@ public class ArrayListDemo3
 			System.out.println(employees.get(i));
 
 		} 
+*/
 
 
 	}
