@@ -1,301 +1,355 @@
+/* Writer : Showmita Saha
+
+ */
+import java.io.FileWriter;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Iterator;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.HashMap;
-public class EventMenuApp
-{
-	public static void main (String[]args)
-		
-	{	
-		Events event = new Events();
-		ArrayList<Attendees> attendeesList = new ArrayList<Attendees>();
-		HashMap<Integer, Events> eventMap = new HashMap<>();
+import java.util.Set;
+import java.util.Map;
 
-	
-		addEvent(event,attendeesList,eventMap);
-		//System.out.println(event);
-		//System.out.println(eventMap);
-		//System.out.println(eventMap.size());
-		menu(event,attendeesList,eventMap);
-
-		
-		//deleteEvent();
+public class EventMenuApp { // Main Class
+	//static variables
+	static int event_ID=0;
+	static HashMap<Integer,Events> eventMap = new HashMap<Integer,Events>();
+	//main method declaration
+	public static void main(String[] args) {
+	menu();
 
 	}
 
-	public static Events addEvent(Events event, ArrayList <Attendees>attendeesList,HashMap<Integer,Events> eventMap)
-
-	{
+	private static void menu() {
+		int input=-1 ;
 		Scanner sc = new Scanner (System.in);
+		//input = sc.nextInt();
 
-		int input = 1;
-		System.out.println("Enter Event Id");
-		event.setEvent_ID(Integer.parseInt(sc.nextLine()));
-		
-		System.out.println("Enter Event Date");
-		event.setEventDate(sc.nextLine());
-
-		System.out.println("Enter Event Name");
-		event.setEventName(sc.nextLine());
-
-		System.out.println("Enter Event City");
-		event.setCity(sc.nextLine());
-
-		System.out.println("Enter attendees and write 0 to end the list");
-		while (input != 0)
-		{	
-
-			Attendees a = new Attendees ();
-
-			System.out.println("Enter an attendee ID");
-
-			 a.setGuest_ID(Integer.parseInt(sc.nextLine()));
-			 input = a.getGuest_ID();
-			 if(input == 0)
-			 {
-			 	break;
-			 }
-
-			
-			System.out.println("Enter an attendee name");
-			 a.setName(sc.nextLine());
-
-			System.out.println("Enter an attendee occupation");
-			 a.setOccupation(sc.nextLine());
-
-			attendeesList.add (a);
+		System.out.println("1.Add Event\n2.List of Events\n3. Details of an event\n4.Edit an event\n5.Delete an event\n6.List of event attendees\n7.Add attendee to an event\n8.Delete an attendee of an event\nType 0 to exit");
+		System.out.println("Enter your choice: ");
+		try {
+			input = sc.nextInt();
 		}
-		System.out.println(attendeesList);
-		event.setAttendeesList(attendeesList);
-		
-		eventMap.put(event.getEvent_ID(),event);
-		return event;
+		catch(Exception  e)
+		{
+			System.out.println("You must type a number ");
+			menu();
+		}
+		inputProcessor(input);
 	}
-	public static void menu(Events event, ArrayList <Attendees>attendeesList,HashMap<Integer,Events> eventMap)
-	{
+
+	private static void inputProcessor(int input) {
+		if (input == 1)
+		{
+			addEventMenu();
+		}
+		else if (input==2)
+		{
+			viewListOfEvents();
+		}
+		else if (input==3)
+		{
+			viewDetailsOfEvents();
+		}
+		else if (input==4)
+		{
+			editEvent();
+		}
+		else if (input==5)
+		{
+			deleteEvent();
+		}
+		else if (input==6)
+		{
+			listOfAttendees();
+		}
+		else if (input==7)
+		{
+			addAttendee();
+		}
+		else if (input==8)
+		{
+			deleteAttendee();
+		}
+		else if (input==0)
+		{
+			System.exit(0);
+		}
+		else
+		{
+			System.out.println("Wrong Input");
+			menu();
+		}
+	}
+// Delete Attendee
+	private static void deleteAttendee() {
 
 		Scanner sc = new Scanner (System.in);
-		System.out.println("Choose from the following list \n 1.Add event \n2.List All Events\n3.List an event by Event ID\n4.Edit Event\n5.Delete an Event\n6.List of attendees to an event\n7.Add and attendee\n8.Delete an event\nInsert Number: ");
-		//sc.nextLine();
-		   	if (Integer.parseInt(sc.nextLine())==1)
+		int input = -1;
+		int id=-1 ;
+		System.out.println("Provide an Event Id to delete an Attendee from the list");
 
+		try{ input = Integer.parseInt(sc.nextLine());}
+		catch  (Exception e)
+		{
+			System.out.println("You must type a number ");
+			deleteAttendee();
+		}
+		System.out.println("Write the attendee Id to remove");
+		try{id = Integer.parseInt(sc.nextLine());}
+		catch(Exception e)
+		{
+			System.out.println("You must type a number ");
+			deleteAttendee();
+		}
+		System.out.println("Write down the attendee name to remove");
+		String attendeeName = sc.nextLine();
+		System.out.println("Write down the occupation name to remove");
+		String attendeeOccupation = sc.nextLine();
 
-		   	{	
-
-		   		
-		   		addEvent(event, attendeesList,eventMap);
-				menu(event,attendeesList,eventMap);
-
-		   	
-		   	}
-		  		
-		    else if (Integer.parseInt(sc.nextLine())==2)
-		    {	
-		    	listAllEvents(eventMap);
-		    	menu(event,attendeesList,eventMap);
-		    }			
-		    else if (Integer.parseInt(sc.nextLine())==3)
-		    {	
-		    	eventDetails(eventMap);	
-		    	menu(event,attendeesList,eventMap);
-		    }
-
-		     else if (Integer.parseInt(sc.nextLine())==4)
-		    {	
-		    	editEvents(eventMap,event,attendeesList);
-		    	menu(event,attendeesList,eventMap);
-		    }
-	
-			else if (Integer.parseInt(sc.nextLine())==5)
-	   		{	
-	   			deleteEvents(eventMap);
-	   			menu(event,attendeesList,eventMap);
-	    		
-	    	}
-
-	     	else if (Integer.parseInt(sc.nextLine())==6)
-		    {	
-		    	listOfAttendees( attendeesList, event,eventMap);   
-		    	menu(event,attendeesList,eventMap); 	
-		    }
-		    
-	     	else if (Integer.parseInt(sc.nextLine())==7)
-		    {		
-		    	
-		    	addAttendee(attendeesList,event,eventMap);
-		    	menu(event,attendeesList,eventMap);
-		    }
-		    else if (Integer.parseInt(sc.nextLine())==0)
-		    {
-		    	System.exit(0);
-		    }
-	    
-
-	    
-		   /* else if (Integer.parseInt(sc.nextLine())==7)
-		    {
-		    	deleteAttendee();
-		    }*/
-			 else  
-			{
-				 System.out.println("wrong choice");
-				 menu(event,attendeesList,eventMap);
-			}
-
-    }
-
-	public static void listAllEvents(HashMap<Integer, Events> eventMap)
-	{
-		System.out.println(eventMap);
-	}
-	public static void eventDetails(HashMap<Integer, Events> eventMap)
-	{	Scanner sc =new Scanner (System.in);
-		System.out.println ("Write down the ID for the Event");
-		int ID = Integer.parseInt(sc.nextLine());
-		System.out.println(eventMap.get(ID));
-
-	}
-	public static void editEvents(HashMap<Integer, Events> eventMap,Events event,ArrayList <Attendees>attendeesList)
-	{	Scanner sc =new Scanner (System.in);
-		System.out.println("Write down the details you want to change\n Choose from the menu by selcting number");
-		int input = Integer.parseInt(sc.nextLine());
-		int val =1;
+		Attendees attendee = new Attendees(id,attendeeName,attendeeOccupation);
 		if (eventMap.containsKey(input))
 		{
-			System.out.println("Choose from menu by number \n 1. Change Event Name \n 2.Change Event Date \n3. Change Event City 4. Change Attendees List");
 
-			if (Integer.parseInt(sc.nextLine())==1)
+
+				int size = eventMap.get(input).getAttendeesList().size(); //getting the size of the attendees list by provided event ID
+				int index =0;
+				for (int i=0;i<size;i++)
 				{
-					event.setEventName(sc.nextLine());
-				}
-			else if (Integer.parseInt(sc.nextLine())==2)
-				{
-					event.setEventDate(sc.nextLine());
-				}
-			else if (Integer.parseInt(sc.nextLine())==3)
-				{
-					event.setCity(sc.nextLine());
-				}
-			else if (Integer.parseInt(sc.nextLine())==4)
-			{
-				System.out.println("Enter attendees and write 0 to end the list");
-				while (val != 0)
-					{	
-						
-						Attendees a = new Attendees ();
-
-						System.out.println("Enter an attendee ID");
-
-						 a.setGuest_ID(Integer.parseInt(sc.nextLine()));
-						 val = a.getGuest_ID();
-						 if(val == 0)
-							 {
-							 	break;
-							 }
-
-						
-						System.out.println("Enter an attendee name");
-						 a.setName(sc.nextLine());
-
-						System.out.println("Enter an attendee occupation");
-						 a.setOccupation(sc.nextLine());
-
-						attendeesList.add (a);
-						eventMap.put(input,event);
-						System.out.println("Edit List " + eventMap);
+					if (eventMap.get(input).getAttendeesList().get(i)==attendee) //comparing the attendees list value to provided value
+					{
+						 index = i;
 					}
-				
+
+				}
+
+
+				eventMap.get(input).getAttendeesList().remove(index); //removing attendee
+
 			}
-			else 
+
+		else
+		{
+			System.out.println("Wrong input");
+
+		}
+		menu();
+	}
+
+	//Add attendee
+	private static void addAttendee() {
+		Scanner sc = new Scanner (System.in);
+		int input =-1;
+		System.out.println("Provide an Event Id to add an Attendee to the list");
+		try{ input = Integer.parseInt(sc.nextLine());}
+		catch (Exception e)
+		{
+			System.out.println("You must type a number ");
+			addAttendee();
+		}
+
+		if (eventMap.containsKey(input))
+		{
+			int newAttendeeID = eventMap.get(input).getAttendeesList().size()+1;
+			System.out.println("Enter Attendee Name");
+			String newAttendeeName = sc.nextLine();
+			System.out.println("Enter Attendee Occupation");
+			String newAttendeeOccupation = sc.nextLine();
+			Attendees attendees = new Attendees(newAttendeeID,newAttendeeName,newAttendeeOccupation);
+			eventMap.get(input).getAttendeesList().add(attendees); //adding attendee
+		}
+
+		else
+		{
+			System.out.println("`Wrong Input");
+		}
+
+		menu();
+
+	}
+// ListOfAttendees
+	private static void listOfAttendees() {
+		Scanner sc = new Scanner (System.in);
+		System.out.println("Provide an Event Id to view the Attendees list");
+		int input = -1;
+		try  {input = Integer.parseInt(sc.nextLine());}
+		catch (Exception e)
+		{
+			System.out.println("You must type a number ");
+			listOfAttendees();
+		}
+		if (eventMap.containsKey(input))
+		{
+			System.out.println(eventMap.get(input).getAttendeesList()); //viewing attendeelist
+
+
+		}
+		else
+		{
+			System.out.println("Wrong Input");
+		}
+		menu();
+	}
+// Delete Event
+	private static void deleteEvent() {
+		Scanner sc = new Scanner (System.in);
+		System.out.println("Provide an Event Id to Delete Event");
+		int input = -1;
+		try { input = Integer.parseInt(sc.nextLine());}
+		catch (Exception e)
+		{
+			System.out.println("You must type a number ");
+			deleteEvent();
+		}
+		if (eventMap.containsKey(input))
+		{
+			eventMap.remove(input); //removing event by provided event ID
+		}
+		else
+		{
+			System.out.println("Wrong input");
+		}
+		menu();
+
+	}
+// Edit Event
+	private static void editEvent() {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Provide an Event Id to edit Event");
+		int input = -1;
+		try{ input = Integer.parseInt(sc.nextLine());}
+		catch (Exception e)
+		{
+			System.out.println("You must type a number ");
+			editEvent();
+		}
+
+		if (eventMap.containsKey(input))
+		{
+			Events event = new Events ();
+			event = eventMap.get(input);
+			System.out.println("Enter new Event Name");
+			event.setEventName(sc.nextLine());
+			System.out.println("Enter new Date");
+			event.setEventDate(sc.nextLine());
+			System.out.println("Enter new event City");
+			event.setCity(sc.nextLine());
+
+			eventMap.put(event_ID,event); //editing event by changing name, date and city
+
+		}
+		else
+		{
+			System.out.println("Wrong input");
+
+		}
+		menu();
+	}
+// View Details of individual Event
+	private static void viewDetailsOfEvents() {
+
+		Scanner sc = new Scanner (System.in);
+		System.out.println("Write the event Id to find the details of the event");
+		int input = -1;
+		try{ input = Integer.parseInt(sc.nextLine());}
+		catch(Exception e)
+		{
+			System.out.println("You must type a number ");
+			viewDetailsOfEvents();
+		}
+
+		if (eventMap.containsKey(input))
+		{
+			System.out.println(eventMap.get(input));// view details of an individual event
+		}
+		else
+		{
+			System.out.println("Wrong input");
+
+		}
+		menu();
+
+	}
+//View List of all the events
+	private static void viewListOfEvents() {
+
+		for(Map.Entry< Integer,Events> entry: eventMap.entrySet()) {
+			//System.out.println(entry.getKey());
+			System.out.println(entry.getKey() + " : " + entry.getValue().getEventName());
+		}
+		//System.out.println(eventMap);
+		menu();
+	}
+
+
+// Add Event
+	private static void addEventMenu() {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter Event Name");
+		String name = sc.nextLine();
+		//Taking input for event
+		System.out.println("Enter event Date");
+		String date  = sc.nextLine();
+		System.out.println("Enter city of the Event");
+		String city = sc.nextLine();
+		System.out.println("Create attendees List and press 0 to exit");
+		String input = "";
+		int attendeeID = 0;
+		String attendeeName = " ";
+		String attendeeOccupation = "";
+		ArrayList<Attendees> attendeesList = new ArrayList<Attendees>();
+		//taking input for Attendees details
+		while (!input.equals("0"))
+		{
+			System.out.println("Enter Attendee Name");
+			try{input = sc.nextLine();}
+			catch (Exception e)
 			{
-				System.out.println("wrong Input");
+				System.out.println("You must type a number ");
+				addEventMenu();
 			}
-		}
+			if (input.equals("0"))
+			{
+				break;
 
-		else
-		{
-			System.out.println("Wrong Event_ID");
-		}
-	}
-	public static void deleteEvents(HashMap<Integer, Events> eventMap)
-	{
-		Scanner sc = new Scanner (System.in);
-		System.out.println("Delete event by Event ID");
-		int input = Integer.parseInt(sc.nextLine());
-		if (eventMap.containsKey(input))
-		{
-			eventMap.remove(input);
-			System.out.println("After removing Event List  " + eventMap);
-		}
-		else {
-			System.out.println("Wrong ID");
-		}
-		
+			}
+			else
+			{
+				attendeeName = input;
+			}
 
 
-	}
-	public static void listOfAttendees(ArrayList<Attendees> attendeesList,Events event,HashMap<Integer, Events> eventMap)
-	{	Scanner sc = new Scanner (System.in);
-		System.out.println("Find list of Attendees by EventID");
-		int input = Integer.parseInt(sc.nextLine());
-		if (eventMap.containsKey(input))
-		{
-			event = eventMap.get(input);
-			System.out.println(event.getAtttendeesList());
-		}
-		else
-		{
-			System.out.println("Wrong ID");
-		}
-	}
-		
-	public static void addAttendee(ArrayList<Attendees> attendeesList,Events event,HashMap<Integer, Events> eventMap)
-	{
-		Scanner sc = new Scanner (System.in);
-		System.out.println("Enter event Id to add attendee");
-		int input = Integer.parseInt(sc.nextLine());
-		if(eventMap.containsKey(input))
-		{
-		Attendees a = new Attendees();
+			System.out.println("Enter Attendee Occupation");
+			input = sc.nextLine();
+			if (input.equals("0"))
+			{
+				break;
 
-		System.out.println("Enter an attendee ID");
-		a.setGuest_ID(Integer.parseInt(sc.nextLine()));
+			}
+			else
+			{
+				 attendeeOccupation = input;
+			}
 
-		System.out.println("Enter an attendee name");
-		 a.setName(sc.nextLine());
+			attendeeID++;
 
-		System.out.println("Enter an attendee occupation");
-		a.setOccupation(sc.nextLine());
+			attendeesList.add(new Attendees(attendeeID,attendeeName,attendeeOccupation));
 
-		attendeesList.add (a);
-		event.setAttendeesList(attendeesList);
-
-		eventMap.put(input,event);
-		System.out.println("Updated Event Attendees List :" + eventMap.get(input));
 
 		}
-		else
-		{
-			System.out.println("Wrong ID");
-		}
+		event_ID++;
+
+		eventMap.put(event_ID,new Events(event_ID,date,name,city,attendeesList));
+		//System.out.println(eventMap.get(event_ID).getAttendeesList().get(0));
+		menu();
+
+
+
 
 	}
-
-	/* public static void deleteAttendee()
-	 {
-	 	Scanner sc = new Scanner (System.in);
-	 	System.out.println("Enter event Id to remove an attendee");
-	 	int input = Integer.parseInt(sc.nextLine());
-		if(eventMap.containsKey(input))
-		{  
-			event = eventMap.get(input);
-			System.out.println("Enter guest Id to remove the attendee");
-			
-			event.getAttendeesList.remove();
-		}
-
-	 }
-
-	*/	
-
-
 }
