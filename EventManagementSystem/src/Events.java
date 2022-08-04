@@ -1,11 +1,13 @@
 import java.util.ArrayList;
 class Events 
 {
+	// Declare variable
 	private int event_ID;
 	private String eventDate;
 	private String eventName;
 	private String city;
-	private ArrayList<Attendees> attendeesList = new ArrayList<Attendees>();
+	private ArrayList<Attendees> attendeesList = new ArrayList<Attendees>(); // List of Class Attendees
+	//Empty constructor
 	public Events()
 	{
 		this.event_ID = event_ID;
@@ -15,7 +17,7 @@ class Events
 		this.attendeesList= attendeesList;
 	}
 
-
+	//Constructor with variables
 	public Events(int event_ID, String eventDate,String eventName,String city, ArrayList<Attendees> attendeesList)
 	{	
 		this.event_ID = event_ID;
@@ -24,7 +26,7 @@ class Events
 		this.city = city;
 		this.attendeesList= attendeesList;
 	}
-
+	//Setter Methods
 	public void setEvent_ID(int event_ID)
 	{
 		this.event_ID = event_ID;
@@ -49,6 +51,7 @@ class Events
 	{
 		this.attendeesList = attendeesList;
 	}
+	//Getter Methods
 	public int getEvent_ID()
 	{
 		return this.event_ID;
@@ -69,14 +72,15 @@ class Events
 	{
 		return this.city;
 	}
-	public ArrayList<Attendees> getAtttendeesList()
+	public ArrayList<Attendees> getAttendeesList()
 	{
 		return this.attendeesList;
 	}
+	// to String method to get the object value
 	public String toString()
 	{
 
-	String s = "Event ID:"+getEvent_ID()+"\tEventName: " + getEventName()+ "\tCity: " + getCity() + "\n" + getAtttendeesList();
+	String s = "Event ID:"+getEvent_ID()+"\nEvent Name: " + getEventName()+  "\nEvent Date: " + getEventDate()+"\nCity: " + getCity() + "\nList\n=====\n" + getAttendeesList();
 	//System.out.println(s);// To test the block 
 	return s;
 	}

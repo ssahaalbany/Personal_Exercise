@@ -1,9 +1,10 @@
 class Attendees 
-{	
+{
+	//Declare variables for Attendeess
 	private int guest_ID;
 	private String name;
 	private String occupation;
-
+	//Empty constructor
 	public Attendees()
 	{
 		this.guest_ID = guest_ID;
@@ -11,7 +12,7 @@ class Attendees
 		this.occupation = occupation;
 
 	}
-
+	// Constructor with variables
 	public Attendees(int guest_ID, String name,String occupation)
 	{	
 		this.guest_ID = guest_ID;
@@ -22,7 +23,7 @@ class Attendees
 
 
 
-
+	//Setter Methods
 	public void setGuest_ID(int guest_ID)
 	{
 		this.guest_ID = guest_ID;
@@ -39,6 +40,8 @@ class Attendees
 		this.occupation = occupation;
 	}
 
+	//Getter Methods
+
 	public int getGuest_ID()
 	{
 		return this.guest_ID;
@@ -54,10 +57,10 @@ class Attendees
 	{
 		return this.occupation;
 	}
-
+	//toString method to get the value of the Object
 	public String toString()
 	{
-	String s = "ID:"+getGuest_ID()+"\tName: " + getName()+ "\tOccupation: " + getOccupation() ;
+	String s = "ID:"+getGuest_ID()+"\nName: " + getName()+ "\nOccupation: " + getOccupation() ;
 	//System.out.println(s);// To test the block 
 	return s;
 	}
