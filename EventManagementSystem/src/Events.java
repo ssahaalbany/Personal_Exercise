@@ -1,5 +1,7 @@
 import java.util.ArrayList;
-class Events 
+import java.util.Iterator;
+
+class Events
 {
 	// Declare variable
 	private int event_ID;
@@ -79,8 +81,19 @@ class Events
 	// to String method to get the object value
 	public String toString()
 	{
+		String s1 = "Event ID:"+getEvent_ID()+"\nEvent Name: " + getEventName()+  "\nEvent Date: " + getEventDate()+"\nCity: " + getCity() + "\nAttendee List\n=====\n";
+		String s2 ="";
 
-	String s = "Event ID:"+getEvent_ID()+"\nEvent Name: " + getEventName()+  "\nEvent Date: " + getEventDate()+"\nCity: " + getCity() + "\nList\n=====\n" + getAttendeesList();
+		Iterator<Attendees> arItr = getAttendeesList().iterator();
+		while(arItr.hasNext())
+		{
+			Attendees ele = arItr.next();
+			//System.out.println(ele);
+			 s2 =s2+ ele.toString()+"\n";
+
+		}
+		String s=s1+s2;
+		//String s = "Event ID:"+getEvent_ID()+"\nEvent Name: " + getEventName()+  "\nEvent Date: " + getEventDate()+"\nCity: " + getCity() + "\nList\n=====\n" + getAttendeesList();
 	//System.out.println(s);// To test the block 
 	return s;
 	}
